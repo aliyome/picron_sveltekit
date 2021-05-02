@@ -6,12 +6,12 @@ module.exports = {
 	// for more information about preprocessors
 	preprocess: [
 		preprocess({
-			postcss: true
+			postcss: true,
 		}),
 	],
 
 	kit: {
 		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte'
-	}
+		target: '#svelte',
+	},
 };

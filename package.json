@@ -17,8 +17,8 @@
 	"lint-staged": {
 		"*.{js,ts,svelte}": [
 			"yarn format",
-			"prettier --fix",
-			"eslint --fix",
+			"yarn prettier --write",
+			"yarn eslint --fix",
 			"git add"
 		]
 	},
@@ -26,6 +26,7 @@
 		"@testing-library/jest-dom/extend-expect"
 	],
 	"devDependencies": {
+		"@sveltejs/adapter-static": "^1.0.0-next.7",
 		"@sveltejs/kit": "next",
 		"@testing-library/jest-dom": "^5.12.0",
 		"@testing-library/svelte": "^3.0.3",

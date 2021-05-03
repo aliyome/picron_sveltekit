@@ -1,4 +1,5 @@
 const preprocess = require('svelte-preprocess');
+const adapter = require('@sveltejs/adapter-static');
 
 /** @type {import('@sveltejs/kit').Config} */
 module.exports = {
@@ -13,5 +14,10 @@ module.exports = {
 	kit: {
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
+		adapter: adapter({
+			pages: 'build',
+			assets: 'build',
+			fallback: 'index.html',
+		}),
 	},
 };

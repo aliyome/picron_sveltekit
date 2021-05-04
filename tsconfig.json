@@ -23,7 +23,10 @@
 		"allowJs": true,
 		"checkJs": true,
 		"paths": {
-			"$lib/*": ["src/lib/*"]
+			"$lib/*": ["src/lib/*"],
+			"$components/*": ["src/components/*"],
+			"$infrastructures/*": ["src/infrastructures/*"],
+			"$config/*": ["src/config/*"]
 		},
 		"types": ["@types/jest", "@testing-library/jest-dom"]
 	},

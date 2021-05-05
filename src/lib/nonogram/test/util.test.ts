@@ -1,40 +1,40 @@
-import type { Cell } from '../types';
+import type { CellType } from '../types';
 import util from '../util';
 
 describe('trimLine', () => {
 	describe('trimming', () => {
 		it('does nothing if not needed', () => {
-			let fixture: Cell[] = [0, 0, 0];
+			let fixture: CellType[] = [0, 0, 0];
 			let expected = [[0, 0, 0], [0], { left: [], right: [] }];
 			let actual = util.trimLine(fixture, [0]);
 			expect(actual).toEqual(expected);
 		});
 		it('trims on the left', () => {
-			let fixture: Cell[] = [-1, 1, -1, 1, 0];
+			let fixture: CellType[] = [-1, 1, -1, 1, 0];
 			let expected = [[1, 0], [1], { left: [-1, 1, -1], right: [] }];
 			let actual = util.trimLine(fixture, [1, 1]);
 			expect(actual).toEqual(expected);
 		});
 		it('trims on the right', () => {
-			let fixture: Cell[] = [0, 0, -1, -1];
+			let fixture: CellType[] = [0, 0, -1, -1];
 			let expected = [[0, 0], [1], { left: [], right: [-1, -1] }];
 			let actual = util.trimLine(fixture, [1]);
 			expect(actual).toEqual(expected);
 		});
 		it('handles 1s on the left rim', () => {
-			let fixture: Cell[] = [-1, 1, 1, 0, 0, -1, -1];
+			let fixture: CellType[] = [-1, 1, 1, 0, 0, -1, -1];
 			let expected = [[1, 0, 0], [1, 1], { left: [-1, 1], right: [-1, -1] }];
 			let actual = util.trimLine(fixture, [2, 1]);
 			expect(actual).toEqual(expected);
 		});
 		it('handles 1s on the right rim', () => {
-			let fixture: Cell[] = [-1, -1, 0, 0, 1, 1, 1, -1, -1];
+			let fixture: CellType[] = [-1, -1, 0, 0, 1, 1, 1, -1, -1];
 			let expected = [[0, 0, 1], [1, 1], { left: [-1, -1], right: [1, 1, -1, -1] }];
 			let actual = util.trimLine(fixture, [1, 3]);
 			expect(actual).toEqual(expected);
 		});
 		it('trims on both ends', () => {
-			let fixture: Cell[] = [1, 1, -1, -1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, -1, -1, -1];
+			let fixture: CellType[] = [1, 1, -1, -1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, -1, -1, -1];
 			let expected = [
 				[1, 0, 0, 1, 0, 0, 0, 1],
 				[2, 2, 3],
@@ -44,7 +44,7 @@ describe('trimLine', () => {
 			expect(actual).toEqual(expected);
 		});
 		it('handles complicated cases', () => {
-			let fixture: Cell[] = [
+			let fixture: CellType[] = [
 				-1,
 				-1,
 				1,
@@ -100,7 +100,7 @@ describe('trimLine', () => {
 		});
 
 		it('handles complicated cases 2', () => {
-			let fixture: Cell[] = [
+			let fixture: CellType[] = [
 				-1,
 				-1,
 				-1,
@@ -155,7 +155,7 @@ describe('trimLine', () => {
 			expect(actual).toEqual(expected);
 		});
 		it('handles complicated cases 3', () => {
-			let fixture: Cell[] = [
+			let fixture: CellType[] = [
 				-1,
 				1,
 				-1,
@@ -212,7 +212,7 @@ describe('trimLine', () => {
 	});
 	describe('restoring', () => {
 		it('restores trimmed lines', () => {
-			let fixtures: Cell[][] = [
+			let fixtures: CellType[][] = [
 				[0, 0, 0],
 				[-1, 1, 0],
 				[1, 0, -1, -1],

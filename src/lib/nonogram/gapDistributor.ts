@@ -1,8 +1,8 @@
 import pushSolver from './solvers/pushSolver';
-import type { Cell } from './types';
+import type { CellType } from './types';
 const pushLeft = pushSolver.pushLeft;
 
-const findGaps = (line: Cell[]): number[] =>
+const findGaps = (line: CellType[]): number[] =>
 	line.reduce((result, el, i, line) => {
 		if (el > -1) {
 			if (line[i - 1] > -1) {
@@ -15,7 +15,7 @@ const findGaps = (line: Cell[]): number[] =>
 	}, []);
 
 const allWithOneGap = (
-	line: Cell[],
+	line: CellType[],
 	gaps: number[],
 	hints: number[],
 ): {
@@ -31,7 +31,7 @@ const allWithOneGap = (
 };
 
 const gapDistributor = (
-	line: Cell[],
+	line: CellType[],
 	hints: number[],
 ): {
 	gaps: number[];

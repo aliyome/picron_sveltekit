@@ -3,7 +3,7 @@
  */
 
 import type Puzzle from '../Puzzle';
-import type { Cell } from '../types';
+import type { CellType } from '../types';
 
 const drawHeader = (viewBox: number[]) => {
 	const scaling = 20;
@@ -103,7 +103,7 @@ const drawHints = ({
 	return result;
 };
 
-const drawState = (state: Cell[][]) => {
+const drawState = (state: CellType[][]) => {
 	let result = '<g>';
 	state.forEach((row, y) => {
 		row.forEach((el, x) => {

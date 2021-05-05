@@ -2,7 +2,7 @@ import util from '../util';
 import findGapDistributions from '../gapDistributor';
 import pushSolver from './pushSolver';
 
-import type { Cell } from '../types';
+import type { CellType } from '../types';
 const cacheLimits = [2, 20];
 
 /**
@@ -66,7 +66,11 @@ const solveGap = (gap: number[], hints: number[]): { zeros: Uint8Array; ones: Ui
 	return result;
 };
 
-const solveGapWithHintList = (gap: number[], hintList: number[][], debugMode: boolean): Cell[] => {
+const solveGapWithHintList = (
+	gap: number[],
+	hintList: number[][],
+	debugMode: boolean,
+): CellType[] => {
 	util.assert(!gap.includes(-1), 'solveGapWithHintList called with a non-gap');
 	const zeros = new Uint8Array(gap.length);
 	const ones = new Uint8Array(gap.length);
@@ -95,7 +99,7 @@ const solveGapWithHintList = (gap: number[], hintList: number[][], debugMode: bo
 	return result;
 };
 
-const solve = (line: Cell[], hints: number[], debugMode = false): Cell[] | null => {
+const solve = (line: CellType[], hints: number[], debugMode = false): CellType[] | null => {
 	if (line.every((el) => el === 0)) {
 		return pushSolver.solve(line, hints);
 	}

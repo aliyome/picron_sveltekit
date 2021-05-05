@@ -1,7 +1,7 @@
 import Puzzle from './Puzzle';
 import util from './util';
 import type Strategy from './Strategy';
-import type { Cell } from './types';
+import type { CellType } from './types';
 
 const getNextIndex = (zeroIndexes: number[], randomize: boolean) => {
 	if (randomize) {
@@ -14,7 +14,7 @@ const getNextIndex = (zeroIndexes: number[], randomize: boolean) => {
 const recurse = (
 	strategy: Strategy,
 	currentRecursionLevel: number,
-	snapshot: Cell[],
+	snapshot: CellType[],
 	index: number,
 	trial: Puzzle,
 	maxRecursionLevel: number,

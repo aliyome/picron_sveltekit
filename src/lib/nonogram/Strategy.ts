@@ -1,7 +1,7 @@
 import util from './util';
 import guessAndConquer from './guessAndConquer';
 
-import type { Cell, Solver } from './types';
+import type { CellType, Solver } from './types';
 import type Puzzle from './Puzzle';
 
 /**
@@ -34,7 +34,7 @@ class Strategy {
 	 */
 	solve(puzzle: Puzzle, withTrialAndError = true): void {
 		let start: number;
-		let statistics: Cell[];
+		let statistics: CellType[];
 		let solutionSequence: string[];
 		if (this.debugMode) {
 			start = Date.now();
@@ -102,7 +102,7 @@ class Strategy {
 		let skip = false;
 
 		// Optimize iteration order
-		const optimizeOrder = (lines: Cell[][], hints: number[][]) => {
+		const optimizeOrder = (lines: CellType[][], hints: number[][]) => {
 			// remove already solved lines
 			const unsolvedLines = lines.reduce((result, line, index) => {
 				const zeros = line.reduce((count, x) => count + (x === 0 ? 1 : 0), 0);
@@ -111,7 +111,7 @@ class Strategy {
 				}
 				result.push({ line, index, zeros });
 				return result;
-			}, [] as { line: Cell[]; index: number; zeros: number; estimate?: number }[]);
+			}, [] as { line: CellType[]; index: number; zeros: number; estimate?: number }[]);
 
 			// sort by estimated computation effort
 			if (skipEarly) {
@@ -128,7 +128,7 @@ class Strategy {
 		};
 
 		// the actual execution
-		const run = (lines: Cell[][], hints: number[][], onRow?: boolean) => {
+		const run = (lines: CellType[][], hints: number[][], onRow?: boolean) => {
 			const visited = onRow
 				? { current: this.visited.rows, other: this.visited.columns }
 				: { current: this.visited.columns, other: this.visited.rows };

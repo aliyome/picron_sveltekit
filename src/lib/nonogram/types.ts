@@ -4,13 +4,13 @@ export const cellType = {
 	Empty: -1,
 } as const;
 
-export type Cell = typeof cellType[keyof typeof cellType];
+export type CellType = typeof cellType[keyof typeof cellType];
 
 export type PuzzleData = {
 	columns: number[][];
 	rows: number[][];
-	content: Cell[];
+	content: CellType[];
 };
 
-type SolverFunc = (line: Cell[], hints: number[]) => Cell[];
+type SolverFunc = (line: CellType[], hints: number[]) => CellType[];
 export type Solver = SolverFunc & { speed: string };

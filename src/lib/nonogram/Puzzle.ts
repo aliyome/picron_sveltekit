@@ -1,4 +1,4 @@
-import type { Cell, PuzzleData } from './types';
+import type { CellType, PuzzleData } from './types';
 import util from './util';
 import ascii from './serializers/ascii';
 import svg from './serializers/svg';
@@ -10,18 +10,18 @@ class Puzzle {
 	columnHints: number[][];
 	height: number;
 	width: number;
-	originalContent: Cell[];
+	originalContent: CellType[];
 
 	declare import: (puzzle: Puzzle) => void;
 	declare toJSON: () => {
 		columns: number[][];
 		rows: number[][];
-		content: Cell[];
+		content: CellType[];
 	};
-	declare rows: Cell[][];
-	declare columns: Cell[][];
+	declare rows: CellType[][];
+	declare columns: CellType[][];
 	declare isFinished: boolean;
-	declare snapshot: Cell[];
+	declare snapshot: CellType[];
 	declare isSolved: boolean;
 
 	constructor(data: string | PuzzleData) {
@@ -34,7 +34,7 @@ class Puzzle {
 		const initialState = this.mapData(puzzleData);
 		this.initAccessors(initialState);
 	}
-	mapData(data: PuzzleData): Cell[] {
+	mapData(data: PuzzleData): CellType[] {
 		const cleanClone = (hints: number[][]) =>
 			hints.map((h) => {
 				if (h.length === 1 && h[0] === 0) {
@@ -54,13 +54,13 @@ class Puzzle {
 		return new Array(this.width * this.height).fill(0);
 	}
 
-	initAccessors(state: Cell[]): void {
+	initAccessors(state: CellType[]): void {
 		const width = this.width;
 		const height = this.height;
 
-		const rows: Cell[][] = new Array(height);
-		const makeRow = (rowIndex: number): Cell[] => {
-			const row: Cell[] = Array(width).fill(0);
+		const rows: CellType[][] = new Array(height);
+		const makeRow = (rowIndex: number): CellType[] => {
+			const row: CellType[] = Array(width).fill(0);
 			row.forEach((_, colIndex) => {
 				// TODO: extract to class
 				Object.defineProperty(row, colIndex, {
@@ -81,15 +81,15 @@ class Puzzle {
 				get() {
 					return row;
 				},
-				set(newRow: Cell[]) {
+				set(newRow: CellType[]) {
 					newRow.forEach((el, x) => (state[rowIndex * width + x] = el));
 				},
 			});
 		}
 
-		const columns: Cell[][] = Array(width);
-		const makeColumn = (colIndex: number): Cell[] => {
-			const column: Cell[] = Array(height).fill(0);
+		const columns: CellType[][] = Array(width);
+		const makeColumn = (colIndex: number): CellType[] => {
+			const column: CellType[] = Array(height).fill(0);
 			column.forEach((_, rowIndex) => {
 				// TODO: extract to class
 				Object.defineProperty(column, rowIndex, {
@@ -109,7 +109,7 @@ class Puzzle {
 				get() {
 					return column;
 				},
-				set(newCol: Cell[]) {
+				set(newCol: CellType[]) {
 					newCol.forEach((el, y) => (state[y * width + colIndex] = el));
 				},
 			});
@@ -121,7 +121,7 @@ class Puzzle {
 				get() {
 					return rows;
 				},
-				set(newRows: Cell[][]) {
+				set(newRows: CellType[][]) {
 					newRows.forEach((el, i) => {
 						rows[i] = el;
 					});
@@ -131,7 +131,7 @@ class Puzzle {
 				get() {
 					return columns;
 				},
-				set(cols: Cell[][]) {
+				set(cols: CellType[][]) {
 					cols.forEach((el, i) => {
 						columns[i] = el;
 					});
@@ -149,7 +149,7 @@ class Puzzle {
 			},
 			isSolved: {
 				get() {
-					const isOk = (line: Cell[], hints: number[]) => {
+					const isOk = (line: CellType[], hints: number[]) => {
 						const actual = line
 							.join('')
 							.split(/(?:-1)+/g)

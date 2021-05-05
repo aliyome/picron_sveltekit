@@ -1,4 +1,4 @@
-import type { Cell } from './types';
+import type { CellType } from './types';
 
 const assert = (cond: boolean, message: string): void => {
 	if (!cond) {
@@ -11,9 +11,9 @@ const clone = <T>(x: T): T => JSON.parse(JSON.stringify(x));
 const hintSum = (hints: number[]): number => hints.reduce((x, y, i) => x + y + (i ? 1 : 0), 0);
 
 const trimLine = (
-	line: Cell[],
+	line: CellType[],
 	hints: number[],
-): [Cell[], number[], { left: Cell[]; right: Cell[] }] => {
+): [CellType[], number[], { left: CellType[]; right: CellType[] }] => {
 	let minIndex = line.indexOf(0);
 	if (minIndex === -1) {
 		throw new Error('Cannot trim solved line');
@@ -74,8 +74,10 @@ const trimLine = (
 	];
 };
 
-const restoreLine = (line: Cell[], trimInfo: { left: Cell[]; right: Cell[] }): Cell[] =>
-	trimInfo.left.concat(line).concat(trimInfo.right);
+const restoreLine = (
+	line: CellType[],
+	trimInfo: { left: CellType[]; right: CellType[] },
+): CellType[] => trimInfo.left.concat(line).concat(trimInfo.right);
 
 const spinner = {
 	steps: ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'],

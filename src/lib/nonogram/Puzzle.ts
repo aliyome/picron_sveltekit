@@ -54,7 +54,7 @@ class Puzzle {
 		return new Array(this.width * this.height).fill(0);
 	}
 
-	initAccessors(state: Cell[]) {
+	initAccessors(state: Cell[]): void {
 		const width = this.width;
 		const height = this.height;
 
@@ -149,8 +149,8 @@ class Puzzle {
 			},
 			isSolved: {
 				get() {
-					let isOk = (line: Cell[], hints: number[]) => {
-						let actual = line
+					const isOk = (line: Cell[], hints: number[]) => {
+						const actual = line
 							.join('')
 							.split(/(?:-1)+/g)
 							.map((x) => x.length)
@@ -179,25 +179,25 @@ class Puzzle {
 		};
 	}
 
-	checkConsistency({ rows, columns, content }: PuzzleData) {
+	checkConsistency({ rows, columns, content }: PuzzleData): void {
 		if (content) {
 			let invalid = !content || !Array.isArray(content);
 			invalid = invalid || content.length !== this.height * this.width;
 			invalid = invalid || !content.every((i) => i === -1 || i === 0 || i === 1);
 			util.assert(!invalid, 'Invalid content data');
 		}
-		let sum = (a: number[]) => a.reduce((x, y) => x + y, 0);
-		let rowSum = sum(rows.map(sum));
-		let columnSum = sum(columns.map(sum));
+		const sum = (a: number[]) => a.reduce((x, y) => x + y, 0);
+		const rowSum = sum(rows.map(sum));
+		const columnSum = sum(columns.map(sum));
 		util.assert(rowSum === columnSum, 'Invalid hint data');
 	}
 
-	inspect() {
+	inspect(): string {
 		// called by console.log
 		return ascii(this);
 	}
 
-	get svg() {
+	get svg(): string {
 		return svg(this);
 	}
 }

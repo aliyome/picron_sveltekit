@@ -32,11 +32,14 @@ class Strategy {
 	 * @param {Puzzle} puzzle The puzzle to solve
 	 * @param {boolean} withTrialAndError `false` to stop without trial and error. Defaults to `true`.
 	 */
-	solve(puzzle: Puzzle, withTrialAndError = true) {
+	solve(puzzle: Puzzle, withTrialAndError = true): void {
+		let start: number;
+		let statistics: Cell[];
+		let solutionSequence: string[];
 		if (this.debugMode) {
-			var start = Date.now();
-			var statistics = Array(this.solvers.length).fill(0);
-			var solutionSequence = [];
+			start = Date.now();
+			statistics = Array(this.solvers.length).fill(0);
+			solutionSequence = [];
 		}
 
 		// keep tracks of visited lines
@@ -93,16 +96,16 @@ class Strategy {
 	 * @param {number} solverIndex The solver's index in `this.solvers`
 	 * @param {Array} solutionSequence Array of strings for statistics in debug mode
 	 */
-	solveOnce(puzzle: Puzzle, solver: Solver, solverIndex: number, solutionSequence: string[]) {
+	solveOnce(puzzle: Puzzle, solver: Solver, solverIndex: number, solutionSequence: string[]): void {
 		// If we're dealing with a slow solver, we want to skip as soon as one line is partially solved
-		let skipEarly = (solver as any).speed === 'slow';
+		const skipEarly = (solver as any).speed === 'slow';
 		let skip = false;
 
 		// Optimize iteration order
-		let optimizeOrder = (lines: Cell[][], hints: number[][]) => {
+		const optimizeOrder = (lines: Cell[][], hints: number[][]) => {
 			// remove already solved lines
-			let unsolvedLines = lines.reduce((result, line, index) => {
-				let zeros = line.reduce((count, x) => count + (x === 0 ? 1 : 0), 0);
+			const unsolvedLines = lines.reduce((result, line, index) => {
+				const zeros = line.reduce((count, x) => count + (x === 0 ? 1 : 0), 0);
 				if (!zeros) {
 					return result;
 				}
@@ -113,9 +116,9 @@ class Strategy {
 			// sort by estimated computation effort
 			if (skipEarly) {
 				unsolvedLines.forEach((lineMeta) => {
-					let { index, zeros } = lineMeta;
-					let hintSum = util.hintSum(hints[index]);
-					let estimate = zeros < hintSum ? 0 : Math.pow(zeros - hintSum, hints[index].length);
+					const { index, zeros } = lineMeta;
+					const hintSum = util.hintSum(hints[index]);
+					const estimate = zeros < hintSum ? 0 : Math.pow(zeros - hintSum, hints[index].length);
 
 					lineMeta.estimate = estimate;
 				});
@@ -125,11 +128,11 @@ class Strategy {
 		};
 
 		// the actual execution
-		let run = (lines: Cell[][], hints: number[][], onRow?: boolean) => {
-			let visited = onRow
+		const run = (lines: Cell[][], hints: number[][], onRow?: boolean) => {
+			const visited = onRow
 				? { current: this.visited.rows, other: this.visited.columns }
 				: { current: this.visited.columns, other: this.visited.rows };
-			let rearrangedLines = optimizeOrder(lines, hints);
+			const rearrangedLines = optimizeOrder(lines, hints);
 			rearrangedLines.forEach(({ line, index: i, estimate }) => {
 				if (skip || visited.current[i][solverIndex]) {
 					return;
@@ -146,15 +149,16 @@ class Strategy {
 				}
 				visited.current[i][solverIndex] = 1;
 				// First, trim unnecessary information from the line
-				let [trimmedLine, trimmedHints, trimInfo] = util.trimLine(line, hints[i]);
+				const [trimmedLine, trimmedHints, trimInfo] = util.trimLine(line, hints[i]);
+				let start: number;
 				if (this.debugMode) {
-					var start = Date.now();
+					start = Date.now();
 				}
 				// solver run
 				let newLine = solver(trimmedLine, trimmedHints);
 
 				if (this.debugMode) {
-					let end = Date.now();
+					const end = Date.now();
 					if (end - start > 100) {
 						console.log(`Long run: ${end - start}ms`);
 					}
@@ -162,7 +166,7 @@ class Strategy {
 
 				// now, restore the trimmed line and analyze the result
 				let hasChanged = false;
-				let changedLines = [];
+				const changedLines = [];
 				if (newLine) {
 					// the solver may return null to indicate no progress
 					newLine = util.restoreLine(newLine, trimInfo);

@@ -3,7 +3,7 @@ import type Puzzle from '../Puzzle';
 /**
  * Draw a puzzle in ASCII art
  */
-const draw = ({ rowHints, columnHints, rows }: Puzzle) => {
+const draw = ({ rowHints, columnHints, rows }: Puzzle): string => {
 	let result = '';
 	const maxLength = (a: string[]) =>
 		a.map((x) => x.length).reduce((max, i) => (i > max ? i : max), 0);

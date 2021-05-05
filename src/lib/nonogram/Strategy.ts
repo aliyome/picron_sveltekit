@@ -98,7 +98,7 @@ class Strategy {
 	 */
 	solveOnce(puzzle: Puzzle, solver: Solver, solverIndex: number, solutionSequence: string[]): void {
 		// If we're dealing with a slow solver, we want to skip as soon as one line is partially solved
-		const skipEarly = (solver as any).speed === 'slow';
+		const skipEarly = solver.speed === 'slow';
 		let skip = false;
 
 		// Optimize iteration order

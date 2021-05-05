@@ -1,14 +1,19 @@
-const assert = (cond: boolean, message: string) => {
+import type { Cell } from './types';
+
+const assert = (cond: boolean, message: string): void => {
 	if (!cond) {
 		throw new Error(message);
 	}
 };
 
-const clone = (x) => JSON.parse(JSON.stringify(x));
+const clone = <T>(x: T): T => JSON.parse(JSON.stringify(x));
 
-const hintSum = (hints) => hints.reduce((x, y, i) => x + y + (i ? 1 : 0), 0);
+const hintSum = (hints: number[]): number => hints.reduce((x, y, i) => x + y + (i ? 1 : 0), 0);
 
-const trimLine = (line, hints) => {
+const trimLine = (
+	line: Cell[],
+	hints: number[],
+): [Cell[], number[], { left: Cell[]; right: Cell[] }] => {
 	let minIndex = line.indexOf(0);
 	if (minIndex === -1) {
 		throw new Error('Cannot trim solved line');
@@ -16,10 +21,10 @@ const trimLine = (line, hints) => {
 	if (line[minIndex - 1] === 1) {
 		minIndex--;
 	}
-	let clonedHints = hints.slice();
+	const clonedHints = hints.slice();
 	for (let i = 0; i < minIndex; i++) {
 		if (line[i] === 1) {
-			let start = i;
+			const start = i;
 			while (i < minIndex && line[i] === 1) {
 				i++;
 			}
@@ -42,7 +47,7 @@ const trimLine = (line, hints) => {
 	}
 	for (let i = line.length; i > maxIndex; i--) {
 		if (line[i] === 1) {
-			let start = i;
+			const start = i;
 			while (i > maxIndex && line[i] === 1) {
 				i--;
 			}
@@ -69,17 +74,18 @@ const trimLine = (line, hints) => {
 	];
 };
 
-const restoreLine = (line, trimInfo) => trimInfo.left.concat(line).concat(trimInfo.right);
+const restoreLine = (line: Cell[], trimInfo: { left: Cell[]; right: Cell[] }): Cell[] =>
+	trimInfo.left.concat(line).concat(trimInfo.right);
 
 const spinner = {
 	steps: ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'],
 	index: 0,
 	lastExecution: 0,
-	spin: function (stream = process.stderr) {
+	spin: function (stream = process.stderr): void {
 		if (!stream) {
 			return;
 		}
-		let now = Date.now();
+		const now = Date.now();
 		if (now - this.lastExecution < 42) {
 			return;
 		}

@@ -3,15 +3,15 @@ import util from './util';
 import type Strategy from './Strategy';
 import type { Cell } from './types';
 
-let getNextIndex = (zeroIndexes: number[], randomize: boolean) => {
+const getNextIndex = (zeroIndexes: number[], randomize: boolean) => {
 	if (randomize) {
-		let random = Math.floor(Math.random() * zeroIndexes.length);
+		const random = Math.floor(Math.random() * zeroIndexes.length);
 		return zeroIndexes.splice(random, 1)[0];
 	}
 	return zeroIndexes.shift();
 };
 
-let recurse = (
+const recurse = (
 	strategy: Strategy,
 	currentRecursionLevel: number,
 	snapshot: Cell[],
@@ -26,7 +26,7 @@ let recurse = (
 		return;
 	}
 	// try recursion
-	let anotherTry = new Puzzle({
+	const anotherTry = new Puzzle({
 		rows: trial.rowHints,
 		columns: trial.columnHints,
 		content: snapshot,
@@ -34,7 +34,7 @@ let recurse = (
 	if (debugMode) {
 		console.log(`>>> Recursing to level ${currentRecursionLevel + 1}`);
 	}
-	let result = guessAndConquer(
+	const result = guessAndConquer(
 		strategy,
 		anotherTry,
 		currentRecursionLevel + 1,
@@ -53,20 +53,20 @@ let recurse = (
  * @param {Puzzle} puzzle The puzzle to solve
  * @param {number} currentRecursionLevel (internal) keep track of recursion depth
  */
-let guessAndConquer = (
+const guessAndConquer = (
 	strategy: Strategy,
 	puzzle: Puzzle,
 	currentRecursionLevel = 0,
 	maxRecursionLevel: number,
 	debugMode: boolean,
-) => {
+): Puzzle | null => {
 	const maxGuessCount = 100;
 	if (puzzle.isFinished) {
 		return puzzle.isSolved ? puzzle : null;
 	}
-	let snapshot = puzzle.snapshot;
+	const snapshot = puzzle.snapshot;
 	// find unsolved cells
-	let zeroIndexes = snapshot.reduce((result, x, i) => {
+	const zeroIndexes = snapshot.reduce((result, x, i) => {
 		if (x === 0) {
 			result.push(i);
 		}
@@ -76,10 +76,10 @@ let guessAndConquer = (
 	util.assert(zeroIndexes.length > 0, 'Contradiction in trial and error');
 
 	for (let i = 0; i < maxGuessCount && zeroIndexes.length; i++) {
-		let index = getNextIndex(zeroIndexes, strategy.randomize);
+		const index = getNextIndex(zeroIndexes, strategy.randomize);
 		// try and set the `index`th cell to 1, and create a new Puzzle from that
 		snapshot[index] = 1;
-		let trial = new Puzzle({
+		const trial = new Puzzle({
 			rows: puzzle.rowHints.slice(),
 			columns: puzzle.columnHints.slice(),
 			content: snapshot,
@@ -104,7 +104,7 @@ let guessAndConquer = (
 				return trial;
 			}
 			// No progress
-			let result = recurse(
+			const result = recurse(
 				strategy,
 				currentRecursionLevel,
 				snapshot,

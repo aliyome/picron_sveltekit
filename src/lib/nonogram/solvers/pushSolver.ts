@@ -1,6 +1,6 @@
 import type { Cell } from '../types';
 
-const shouldSkip = (line: Cell[], hint: number, i: number) => {
+const shouldSkip = (line: Cell[], hint: number, i: number): boolean => {
 	let allZeros = line[i - 1] === 0;
 	let collision = line[i + hint] === 1;
 	for (let x = i; x < i + hint; x++) {
@@ -15,7 +15,7 @@ const shouldSkip = (line: Cell[], hint: number, i: number) => {
 	return allZeros || collision;
 };
 
-const pushLeft = (line: Cell[], hints: number[]) => {
+const pushLeft = (line: Cell[], hints: number[]): Cell[] => {
 	if (hints.length === 0) {
 		return line.includes(1) ? null : line;
 	}
@@ -43,7 +43,7 @@ const pushLeft = (line: Cell[], hints: number[]) => {
 	return null;
 };
 
-const enumerate = (array: number[]) => {
+const enumerate = (array: number[]): void => {
 	for (let i = 0, j = array[0] % 2; i < array.length; i++) {
 		if (array[i] === -1) {
 			array[i] = 0;
@@ -55,7 +55,7 @@ const enumerate = (array: number[]) => {
 	}
 };
 
-const solve = (line: Cell[], hints: number[]) => {
+const solve = (line: Cell[], hints: number[]): Cell[] | null => {
 	const leftmost = pushLeft(line, hints);
 	if (!leftmost) {
 		return null;

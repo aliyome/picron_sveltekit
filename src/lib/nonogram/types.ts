@@ -12,4 +12,5 @@ export type PuzzleData = {
 	content: Cell[];
 };
 
-export type Solver = (line: Cell[], hints: number[]) => boolean;
+type SolverFunc = (line: Cell[], hints: number[]) => Cell[];
+export type Solver = SolverFunc & { speed: string };

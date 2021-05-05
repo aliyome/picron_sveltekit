@@ -8,7 +8,7 @@ const cacheLimits = [2, 20];
 /**
  * @returns {{zeros: Uint8Array, ones: Uint8Array}}
  */
-const solveGap = (gap: number[], hints: number[]) => {
+const solveGap = (gap: number[], hints: number[]): { zeros: Uint8Array; ones: Uint8Array } => {
 	const zeros = new Uint8Array(gap.length);
 	const ones = new Uint8Array(gap.length);
 	if (hints.length === 0) {
@@ -66,7 +66,7 @@ const solveGap = (gap: number[], hints: number[]) => {
 	return result;
 };
 
-const solveGapWithHintList = (gap: number[], hintList: number[][], debugMode: boolean) => {
+const solveGapWithHintList = (gap: number[], hintList: number[][], debugMode: boolean): Cell[] => {
 	util.assert(!gap.includes(-1), 'solveGapWithHintList called with a non-gap');
 	const zeros = new Uint8Array(gap.length);
 	const ones = new Uint8Array(gap.length);
@@ -95,7 +95,7 @@ const solveGapWithHintList = (gap: number[], hintList: number[][], debugMode: bo
 	return result;
 };
 
-const solve = (line: Cell[], hints: number[], debugMode = false) => {
+const solve = (line: Cell[], hints: number[], debugMode = false): Cell[] | null => {
 	if (line.every((el) => el === 0)) {
 		return pushSolver.solve(line, hints);
 	}
@@ -134,6 +134,6 @@ const solve = (line: Cell[], hints: number[], debugMode = false) => {
 	return changed.has(1) ? result : null;
 };
 
-(solve as any).speed = 'slow';
+solve.speed = 'slow';
 
 export default { solveGap, solveGapWithHintList, solve };

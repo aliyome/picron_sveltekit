@@ -11,6 +11,7 @@ class Puzzle {
 	height: number;
 	width: number;
 	originalContent: CellType[];
+	state: CellType[];
 
 	declare import: (puzzle: Puzzle) => void;
 	declare toJSON: () => {
@@ -32,6 +33,7 @@ class Puzzle {
 			puzzleData = data;
 		}
 		const initialState = this.mapData(puzzleData);
+		this.state = initialState;
 		this.initAccessors(initialState);
 	}
 	mapData(data: PuzzleData): CellType[] {

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import Cell from '$components/atoms/Cell.svelte';
+	import type Puzzle from '$lib/nonogram/Puzzle';
 
-	export let width: number;
-	export let height: number;
+	export let puzzle: Puzzle;
 
-	const isFirstRow = (i: number) => 0 <= i && i < width;
-	const isFirstColumn = (i: number) => i % width === 0;
-	const isRulerRow = (i: number) => Math.floor(i / height) % 5 === 0;
-	const isRulerColumn = (i: number) => (i % width) % 5 === 0;
+	const isFirstRow = (i: number) => 0 <= i && i < puzzle.width;
+	const isFirstColumn = (i: number) => i % puzzle.width === 0;
+	const isRulerRow = (i: number) => Math.floor(i / puzzle.height) % 5 === 0;
+	const isRulerColumn = (i: number) => (i % puzzle.width) % 5 === 0;
 	const getBorderClass = (i: number) => {
 		const result: string[] = [];
 		if (isFirstRow(i)) {
@@ -26,8 +26,8 @@
 	};
 </script>
 
-<div class="grid" style="--width:{width}; --height:{height};">
-	{#each new Array(height * width).fill(1) as type, i}
+<div class="grid" style="--width:{puzzle.width}; --height:{puzzle.height};">
+	{#each puzzle.state as type, i}
 		<div class="cell {getBorderClass(i)}">
 			<Cell {type} />
 		</div>

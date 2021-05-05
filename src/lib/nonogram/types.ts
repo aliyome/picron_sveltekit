@@ -9,7 +9,7 @@ export type CellType = typeof cellType[keyof typeof cellType];
 export type PuzzleData = {
 	columns: number[][];
 	rows: number[][];
-	content: CellType[];
+	content?: CellType[];
 };
 
 type SolverFunc = (line: CellType[], hints: number[]) => CellType[];

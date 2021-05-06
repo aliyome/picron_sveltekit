@@ -6,13 +6,6 @@
 	import type { CellType } from '$lib/nonogram/types';
 
 	export let type: CellType;
-
-	let className = '';
-	if (type === cellType.Checked) {
-		className = 'bg-primary-500';
-	} else if (type === cellType.Empty) {
-		className = '';
-	}
 </script>
 
 {#if type === cellType.Checked}

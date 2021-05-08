@@ -1,9 +1,9 @@
-const preprocess = require('svelte-preprocess');
-const adapter = require('@sveltejs/adapter-static');
-const { resolve } = require('path');
+import preprocess from 'svelte-preprocess';
+import adapter from '@sveltejs/adapter-static';
+import { resolve } from 'path';
 
 /** @type {import('@sveltejs/kit').Config} */
-module.exports = {
+const config = {
 	// Consult https://github.com/sveltejs/svelte-preprocess
 	// for more information about preprocessors
 	preprocess: [
@@ -23,11 +23,13 @@ module.exports = {
 		vite: {
 			resolve: {
 				alias: {
-					$components: resolve(__dirname, './src/components'),
-					$infrastructures: resolve(__dirname, './src/infrastructures'),
-					$config: resolve(__dirname, './src/config'),
+					$components: './src/components',
+					$infrastructures: './src/infrastructures',
+					$config: './src/config',
 				},
 			},
 		},
 	},
 };
+
+export default config;

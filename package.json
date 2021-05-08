@@ -27,7 +27,7 @@
 	],
 	"devDependencies": {
 		"@sveltejs/adapter-static": "^1.0.0-next.7",
-		"@sveltejs/kit": "next",
+		"@sveltejs/kit": "^1.0.0-next.102",
 		"@testing-library/jest-dom": "^5.12.0",
 		"@testing-library/svelte": "^3.0.3",
 		"@types/jest": "^26.0.23",

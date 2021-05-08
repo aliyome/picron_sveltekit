@@ -1,6 +1,8 @@
 import preprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-static';
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
+
+const __dirname = dirname(new URL(import.meta.url).pathname);
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -23,9 +25,9 @@ const config = {
 		vite: {
 			resolve: {
 				alias: {
-					$components: './src/components',
-					$infrastructures: './src/infrastructures',
-					$config: './src/config',
+					$components: resolve(__dirname, './src/components'),
+					$infrastructures: resolve(__dirname, './src/infrastructures'),
+					$config: resolve(__dirname, './src/config'),
 				},
 			},
 		},

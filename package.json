@@ -11,7 +11,7 @@
 		"test": "jest src"
 	},
 	"simple-git-hooks": {
-		"pre-commit": "yarn lint-staged",
+		"pre-commit": "yarn lint-staged && yarn check",
 		"pre-push": "yarn format"
 	},
 	"lint-staged": {

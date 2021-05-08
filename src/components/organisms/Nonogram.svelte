@@ -1,8 +1,14 @@
 <script lang="ts">
 	import Cell from '$components/atoms/Cell.svelte';
-	import type Puzzle from '$lib/nonogram/Puzzle';
+	// import type Puzzle from '$lib/nonogram/Puzzle';
+	import Puzzle from '$lib/nonogram/Puzzle';
+	import type Strategy from '$lib/nonogram/Strategy';
+	import type { CellType } from '$lib/nonogram/types';
+	import { cellType } from '$lib/nonogram/types';
 
 	export let puzzle: Puzzle;
+	export let strategy: Strategy;
+	let isSolved: boolean = puzzle.isSolved;
 
 	const isFirstRow = (i: number) => 0 <= i && i < puzzle.width;
 	const isFirstColumn = (i: number) => i % puzzle.width === 0;
@@ -24,11 +30,31 @@
 		}
 		return result.join(' ');
 	};
+
+	const onClickCell = (e: MouseEvent, i: number) => {
+		const x = i % puzzle.width;
+		const y = Math.floor(i / puzzle.height);
+		let type: CellType = cellType.Unknown;
+		if (e.button === 0) {
+			type = cellType.Checked;
+		} else {
+			type = cellType.Empty;
+		}
+		puzzle.rows[y][x] = type;
+
+		const tempPuzzle = new Puzzle(puzzle.toJSON());
+		strategy.solve(tempPuzzle);
+		isSolved = tempPuzzle.isSolved;
+	};
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	const onContextDummy = () => {};
 </script>
 
 <div class="layout">
 	<!-- topleft space -->
-	<div />
+	<div>
+		<span>{isSolved ? '🙆‍♂️' : '🙅‍♂️'}</span>
+	</div>
 
 	<!-- top hint row -->
 	<div class="hint-row" style="--width:{puzzle.width}; --height:1;">
@@ -59,7 +85,11 @@
 	<!-- down right nonogram grid -->
 	<div class="grid" style="--width:{puzzle.width}; --height:{puzzle.height};">
 		{#each puzzle.state as type, i}
-			<div class="cell {getBorderClass(i)}">
+			<div
+				class="cell {getBorderClass(i)}"
+				on:mousedown|preventDefault|stopPropagation={(e) => onClickCell(e, i)}
+				on:contextmenu|preventDefault|stopPropagation={onContextDummy}
+			>
 				<Cell {type} />
 			</div>
 		{/each}
